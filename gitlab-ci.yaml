@@ -1,0 +1,33 @@
+stages:
+  - Prepare
+  - Test
+  - Report
+
+Stable Test ntdev02:
+  stage: Test
+  rules:
+    - when: manual
+  tags:
+    - dom_ntdev02
+  script:
+    - jmeter -n -t dbo_v3.jmx -l ${PWD}\results\results.csv -j ${PWD}\logs\DBOFLlog.log -e -o ${PWD}\HTMLReport\
+  artifacts:
+    paths:
+    - results/
+    - HTMLReport/
+    - logs/
+
+Stable Test ntdev03:
+  stage: Test
+  rules:
+    - when: manual
+  tags:
+    - dom_ntdev03
+  script:
+    - jmeter -n -t dbo_v3.jmx -l ${PWD}\results\results.csv -j ${PWD}\logs\DBOFLlog.log -e -o ${PWD}\HTMLReport\
+  artifacts:
+    paths:
+    - results/
+    - HTMLReport/
+    - logs/
+

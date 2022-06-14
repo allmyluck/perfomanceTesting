@@ -1,0 +1,7 @@
+Показатель	Sql выражение	Характеристика
+Total Request	SELECT sum("count")  FROM "$measurement_name" WHERE ("application" =~ /^$application$/ AND "transaction" = 'all') AND $timeFilter GROUP BY time($__interval)	Количество запросов за указанный интервал
+Failed Request	SELECT sum("countError") FROM "$measurement_name" WHERE ("transaction" = 'all' AND "application" =~ /^$application$/) AND $timeFilter GROUP BY time($__interval)	Количество ошибочных запросов за указанный интервал
+Total Throughput	SELECT mean("count") / $send_interval FROM "$measurement_name" WHERE ("transaction" = 'all' AND "application" =~ /^$application$/) AND $timeFilter GROUP BY time($__interval)	Количетсво ответов сервера за $send_interval. 
+Active Threads	SELECT last("maxAT") FROM "$measurement_name" WHERE ("transaction" = 'internal' AND "application" =~ /^$application$/) AND $timeFilter GROUP BY time($__interval)	Количество активных потоков
+Error Rate	SELECT sum("error") / sum("all") FROM (SELECT sum("count") AS "all" FROM "$measurement_name" WHERE "transaction" = 'all' AND "application" =~ /^$application$/ AND $timeFilter GROUP BY time($__interval) fill(null)), (SELECT sum("countError") AS "error" FROM "$measurement_name" WHERE "transaction" = 'all' AND "application" =~ /^$application$/ AND $timeFilter GROUP BY time($__interval)	Процент ошибок
+Transaction Response Time	SELECT mean("pct95.0") FROM "$measurement_name" WHERE ("statut" = 'ok' AND "application" =~ /^$application$/) AND $timeFilter GROUP BY "transaction", time($__interval)	Время отклика запросов
